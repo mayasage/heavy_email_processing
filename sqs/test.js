@@ -1,13 +1,31 @@
-import AwsSqs from "./sqs.js";
+import sqs from "./sqs.js";
 
-const sqs = new AwsSqs({
-  url: "https://sqs.ap-south-1.amazonaws.com/019018150142/MyQueue",
-  accessKeyId: "",
-  secretAccessKey: "",
-  region: "ap-south-1",
-});
+const notification_sample = `
+{
+  "receivedDateTime@odata.type":"#DateTimeOffset",
+  "receivedDateTime":"2021-12-30T10:53:35Z",
+  "subject":"TEST MESSAGE FOR RICH NOTIFICATIONS",
+  "bodyPreview":"Hello,\r\n\r\nWhat\u2019s up?\r\n\r\nThanks\r\nMegan",
+  "importance@odata.type":"#microsoft.graph.importance",
+  "importance":"normal",
+  "from": {
+      "@odata.type":"#microsoft.graph.recipient",
+      "emailAddress": {
+          "@odata.type":"#microsoft.graph.emailAddress",
+          "name":"Megan Brown",
+          "address":"Megan.Brown@microsoft.com"
+      }
+  }
+}
+`;
 
-// const bool = await sqs.sendMsg({ msg: "Ranger, I'm glad to see you." });
-// console.log("send:", bool);
-const msg = await sqs.receiveMsg({ count: 10, timeout: 10 });
-console.log(msg);
+const arr = [];
+
+for (let i = 0; i < 10; i += 1) {
+  arr.push({
+    Id: (i + 1) + '',
+    MessageBody: notification_sample,
+  });
+}
+
+sqs.recDel().then(msgs => console.log(msgs))

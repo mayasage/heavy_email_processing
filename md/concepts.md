@@ -336,3 +336,9 @@ change notifications differs from webhooks in a few ways, including:
 ## Azure Messaging
 
 - [comprehensive guide](https://medium.com/@JeffyJeff/a-comprehensive-guide-to-azure-message-based-and-event-based-solutions-50e9eb2f6a60)
+
+## SQS Example Code Nodejs V3
+
+- [aws-sdk-v3-example](https://github.com/awsdocs/aws-doc-sdk-examples/blob/main/javascriptv3/example_code/sqs/actions/receive-delete-message.js)
+- [code_examples](https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javascriptv3/example_code/sqs#code-examples)
+- [reduce_sqs_pricing](https://blog.awsfundamentals.com/sqs-pricing)
