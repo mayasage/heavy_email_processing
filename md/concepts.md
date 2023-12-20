@@ -47,19 +47,19 @@ requiring other services to be available.
 
 - **Scaling Up and Down:**
 
-   - The autoscaling group will manage a group of worker instances or processes.
-   - Scaling up occurs when the number of tasks in the SQS queue increases, and
+  - The autoscaling group will manage a group of worker instances or processes.
+  - Scaling up occurs when the number of tasks in the SQS queue increases, and
       additional worker instances are needed to handle the workload.
-   - Scaling down happens when the workload decreases, and surplus worker
+  - Scaling down happens when the workload decreases, and surplus worker
       instances are terminated to save costs.
 
 - **Based on Workload and Latency Requirements:**
 
-   - The decision to scale up or down is driven by workload and latency
+  - The decision to scale up or down is driven by workload and latency
       requirements.
-   - Workload: The number of tasks in the SQS queue. When the queue depth
+  - Workload: The number of tasks in the SQS queue. When the queue depth
       increases, indicating higher demand, the autoscaling group may scale up.
-   - Latency Requirements: This could refer to the time sensitivity of processing
+  - Latency Requirements: This could refer to the time sensitivity of processing
       tasks. If low latency is crucial, scaling up might occur to handle tasks more
       quickly.
 
@@ -81,7 +81,7 @@ and variable workloads commonly found in cloud-based applications.
 
 Amazon SQS offers two queue types for different application requirements:
 
-**Standard Queues**
+### Standard Queues
 
 - **Unlimited Throughput:** Standard queues support a nearly unlimited number
    of transactions per second (TPS) per API action.
@@ -94,14 +94,14 @@ Amazon SQS offers two queue types for different application requirements:
    application can process messages that arrive more than once and out of order,
    for example:
 
-   - Decouple live user requests from intensive background work: Let users upload
+  - Decouple live user requests from intensive background work: Let users upload
       media while resizing or encoding it.
-   - Allocate tasks to multiple worker nodes: Process a high number of credit
+  - Allocate tasks to multiple worker nodes: Process a high number of credit
       card validation requests.
-   - Batch messages for future processing: Schedule multiple entries to be added
+  - Batch messages for future processing: Schedule multiple entries to be added
       to a database.
 
-**FIFO Queues**
+### FIFO Queues
 
 - **High Throughput:** By default, FIFO queues support up to 3,000 messages per
    second with batching or up to 300 messages per second (300 send, receive, or
@@ -120,10 +120,10 @@ Amazon SQS offers two queue types for different application requirements:
    order of operations and events is critical, or where duplicates can't be
    tolerated, for example:
 
-   - Ensure that user-entered commands are executed in the right order.
-   - Display the correct product price by sending price modifications in the
+  - Ensure that user-entered commands are executed in the right order.
+  - Display the correct product price by sending price modifications in the
       right order.
-   - Prevent a student from enrolling in a course before registering for an
+  - Prevent a student from enrolling in a course before registering for an
       account.
 
 ## Queue Functionality
@@ -172,98 +172,98 @@ Amazon SQS offers two queue types for different application requirements:
 
 1. **Visibility Timeout:**
 
-- Sets the length of time that a message received from a queue (by one
-   consumer) will not be visible to the other message consumers.
-- The visibility timeout begins when Amazon SQS returns a message. If the
-   consumer fails to process and delete the message before the visibility timeout
-   expires, the message becomes visible to other consumers. If a message must be
-   received only once, your consumer must delete it within the duration of the
-   visibility timeout.
-- The default visibility timeout setting is 30 seconds. This setting applies
-   to all messages in the queue. Typically, you should set the visibility timeout
-   to the maximum time that it takes your application to process and delete a
-   message from the queue.
-- For optimal performance, set the visibility timeout to be larger than the
-   AWS SDK read timeout. This applies to using the ReceiveMessage API action with
-   either short polling or long polling.
+   - Sets the length of time that a message received from a queue (by one
+      consumer) will not be visible to the other message consumers.
+   - The visibility timeout begins when Amazon SQS returns a message. If the
+      consumer fails to process and delete the message before the visibility timeout
+      expires, the message becomes visible to other consumers. If a message must be
+      received only once, your consumer must delete it within the duration of the
+      visibility timeout.
+   - The default visibility timeout setting is 30 seconds. This setting applies
+      to all messages in the queue. Typically, you should set the visibility timeout
+      to the maximum time that it takes your application to process and delete a
+      message from the queue.
+   - For optimal performance, set the visibility timeout to be larger than the
+      AWS SDK read timeout. This applies to using the ReceiveMessage API action with
+      either short polling or long polling.
 
 2. **Delivery delay:**
 
-- If your consumers need additional time to process messages, you can delay
-   each new message coming to the queue. The delivery delay is the amount of time
-   to delay the first delivery of each message added to the queue. Any messages
-   that you send to the queue remain invisible to consumers for the duration of
-   the delay period. The default (minimum) delay for a queue is 0 seconds. The
-   maximum is 15 minutes.
-- For standard queues, the per-queue delay setting is not retroactive;
-   changing the setting doesn't affect the delay of messages already in the
-   queue.
-- For FIFO queues, the per-queue delay setting is retroactive; changing the
-   setting affects the delay of messages already in the queue.
+   - If your consumers need additional time to process messages, you can delay
+      each new message coming to the queue. The delivery delay is the amount of time
+      to delay the first delivery of each message added to the queue. Any messages
+      that you send to the queue remain invisible to consumers for the duration of
+      the delay period. The default (minimum) delay for a queue is 0 seconds. The
+      maximum is 15 minutes.
+   - For standard queues, the per-queue delay setting is not retroactive;
+      changing the setting doesn't affect the delay of messages already in the
+      queue.
+   - For FIFO queues, the per-queue delay setting is retroactive; changing the
+      setting affects the delay of messages already in the queue.
 
 3. **Receive message wait time:**
 
-- The receive message wait time is the maximum amount of time that polling
-   will wait for messages to become available to receive. The minimum value is
-   zero seconds and the maximum value is 20 seconds.
-- Long polling helps reduce the cost of using Amazon SQS by eliminating the
-   number of empty responses (when there are no messages available for a
-   ReceiveMessage request) and false empty responses (when messages are available
-   but aren't included in a response). If a receive request collects the maximum
-   number of messages, it returns immediately. It does not wait for the polling
-   to time out.
-- If you set the receive message wait time to zero, the receive requests use
-   short polling.
+   - The receive message wait time is the maximum amount of time that polling
+      will wait for messages to become available to receive. The minimum value is
+      zero seconds and the maximum value is 20 seconds.
+   - Long polling helps reduce the cost of using Amazon SQS by eliminating the
+      number of empty responses (when there are no messages available for a
+      ReceiveMessage request) and false empty responses (when messages are available
+      but aren't included in a response). If a receive request collects the maximum
+      number of messages, it returns immediately. It does not wait for the polling
+      to time out.
+   - If you set the receive message wait time to zero, the receive requests use
+      short polling.
 
 4. **Redrive allow policy:**
 
-- The redrive allow policy defines which source queues can use this queue as
-   the dead-letter queue.
-- By default, the redrive allow policy is disabled, which results in the same
-   behavior as allowing all source queues to use this queue as the dead-letter
-   queue.
-- When enabling the redrive allow policy, you can choose to allow or deny all
-   source queues or specify a list of up to 10 source queues by ARN.
-- The source queues must be owned by the same AWS account and must reside in
-   the same region as the dead-letter queue.
+   - The redrive allow policy defines which source queues can use this queue as
+      the dead-letter queue.
+   - By default, the redrive allow policy is disabled, which results in the same
+      behavior as allowing all source queues to use this queue as the dead-letter
+      queue.
+   - When enabling the redrive allow policy, you can choose to allow or deny all
+      source queues or specify a list of up to 10 source queues by ARN.
+   - The source queues must be owned by the same AWS account and must reside in
+      the same region as the dead-letter queue.
 
 5. **Dead-letter queues:**
 
-- If a message can't be consumed successfully, you can send it to a
-   dead-letter queue (DLQ). Dead-letter queues let you isolate problematic
-   messages to determine why they are failing.
-- When you designate a queue to be a source queue, a DLQ is not created
-   automatically. You must first create a queue to designate as the DLQ. The DLQ
-   queue type (standard or FIFO) must match the source queues. You can associate
-   the same DLQ with more than one source queue.
-- The **Maximum receives** value determines when a message will be sent to the
-   DLQ. If the **ReceiveCount** for a message exceeds the maximum receive count
-   for the queue, Amazon SQS moves the message to the associated DLQ (with its
-   original message ID).
-- You must use the same AWS account to create the DLQ and the source queues
-   that send messages to the DLQ. Also, the DLQ must reside in the same region as
-   the source queues that use the DLQ.
+   - If a message can't be consumed successfully, you can send it to a
+      dead-letter queue (DLQ). Dead-letter queues let you isolate problematic
+      messages to determine why they are failing.
+   - When you designate a queue to be a source queue, a DLQ is not created
+      automatically. You must first create a queue to designate as the DLQ. The DLQ
+      queue type (standard or FIFO) must match the source queues. You can associate
+      the same DLQ with more than one source queue.
+   - The **Maximum receives** value determines when a message will be sent to the
+      DLQ. If the **ReceiveCount** for a message exceeds the maximum receive count
+      for the queue, Amazon SQS moves the message to the associated DLQ (with its
+      original message ID).
+   - You must use the same AWS account to create the DLQ and the source queues
+      that send messages to the DLQ. Also, the DLQ must reside in the same region as
+      the source queues that use the DLQ.
 
 6. **Retrieving Messages:**
 
-- When you request a message from a queue, you don't specify request a
-   specific message. Instead, you specify the maximum number of messages
-   (up to 10) that you want to retrieve.
-- Fetch the number of messages that you want to process concurrently at a
-   time.
+   - When you request a message from a queue, you don't specify request a
+      specific message. Instead, you specify the maximum number of messages
+      (up to 10) that you want to retrieve.
+   - Fetch the number of messages that you want to process concurrently at a
+      time.
 
 7. **Batching:**
 
-- Try to always batch requests.
+   - Try to always batch requests.
 
 8. **Large Message Size:**
 
-- Use s3 bucket to store message, and save a pointer to it in the message.
+   - Use s3 bucket to store message, and save a pointer to it in the message.
 
 9. **Message Retry Time**:
 
-- Setup a dead-letter queue.
-- Set the appropriate message retry count.
+   - Setup a dead-letter queue.
+   - Set the appropriate message retry count.
 
 ## Implementation Help
 
